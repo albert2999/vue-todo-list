@@ -1,6 +1,8 @@
 <template>
   <div class="detail-view">
-    <todo-header />
+    <todo-header
+    :dataDetails="dataDetails"
+    />
     <div class="mt-4" v-if="dataDetails?.length > 0">
       <div
         v-for="item in dataDetails"
@@ -13,7 +15,7 @@
             <div
               class="card-subtitle me-auto mt-1 align-self-center d-flex gap-3"
             >
-              <input type="checkbox"/>
+              <input type="checkbox" />
               <div
                 class="dot border border-light rounded-circle align-self-center"
                 :style="`background-color: ${findColor(item.priority)};`"
@@ -21,7 +23,7 @@
               <!-- <div>{{ item.priority }}</div> -->
               <span>{{ item.title }}</span>
               <img
-                @click="handleDelete()"
+                @click="handleUpdate()"
                 class="img-fluid btn p-0"
                 src="../../assets/todo-title-edit-button.svg"
                 alt=""
@@ -29,7 +31,7 @@
             </div>
 
             <img
-              @click="handleDelete()"
+              @click="handleDelete(item.id)"
               class="img-fluid btn p-0"
               src="../../assets/icon-delete.svg"
               alt=""
@@ -50,7 +52,9 @@
       />
     </div>
 
-    <modal-add-todo />
+    <modal-add-todo
+    :handleCreateLocale="handleCreateLocale"
+    />
   </div>
 </template>
 <script>
@@ -73,11 +77,35 @@ export default {
   },
   methods: {
     handleCreateTodo() {},
-    findColor(val){
-      return  priorities.find(
-        (sourceItem) => sourceItem.value == val
-      ).color;
-    }
+    findColor(val) {
+      return priorities.find((sourceItem) => sourceItem.value == val).color;
+    },
+    handleCreateLocale(newData) {
+      this.dataDetails.unshift(newData)
+    },
+    handleDeleteLocale(id) {
+      let newData = this.dataDetails.filter((el) => {
+        return el.id != id;
+      });
+      this.dataDetails = newData;
+
+    },
+    handleDelete(id) {
+      if (id) {
+        axios
+          .delete(`/todo-items`, {
+            params: { id: id },
+          })
+          .then((response) => {
+            // this.data = response.data.data;
+            console.log("delete", response.data);
+            this.handleDeleteLocale(id);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    },
   },
   created() {
     axios
@@ -92,4 +120,9 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.card {
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+</style>

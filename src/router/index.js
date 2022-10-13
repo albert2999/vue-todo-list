@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ActivityView from '../views/ActivityView/ActivityView.vue'
-import DetailView from '../views/DetailView/DetailView.vue'
+import TodoView from '../views/TodoView/TodoView.vue'
 
 const routes = [
   {
@@ -18,7 +18,9 @@ const routes = [
   // },
   {
     path: '/detail/:id',
-    component: DetailView,
+    name: 'detail',
+    props: true,
+    component: TodoView,
   }
 ]
 

@@ -98,7 +98,7 @@ export default {
       priorities,
     };
   },
-  props: {},
+  props: ["handleCreateLocale",],
   methods: {
     handlePrior(val) {
       this.recentPrior = val;
@@ -113,7 +113,8 @@ export default {
           priority: this.recentPrior.value,
         })
         .then((response) => {
-          console.log("responseCreateItemList", response);
+          console.log("responseCreateItemList", response.data);
+          this.handleCreateLocale(response.data)
           this.recentItemTitle = null;
           this.recentPrior = {
             title: "Very High",

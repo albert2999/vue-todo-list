@@ -3,7 +3,7 @@
       <div class="card-body p-0">
         <div>
           <router-link
-          :to="`/detail/${act.id}`"
+          :to="{ name: 'detail', params: { id: act.id }, props:{title: act.title} }"
           class="text-decoration-none text-dark"
           >
             <h4

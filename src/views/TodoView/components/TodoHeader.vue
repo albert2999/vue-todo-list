@@ -1,8 +1,17 @@
 <template>
   <div class="d-flex">
-    <h1 class="me-auto mb-0 align-self-center">Activity</h1>
+    <router-link to="/" class="text-decoration-none text-dark p-0 px-2 me-3">
+      <h1 class="mb-0">&lt;</h1>
+    </router-link>
+
+    <h1 class="mb-0 me-3 align-self-center">Activity {{}}</h1>
+    <img
+      @click="handleDelete()"
+      class="me-auto img-fluid btn p-0"
+      src="../../../assets/todo-title-edit-button.svg"
+      alt=""
+    />
     <span
-      @click="handleCreateActivity"
       class="btn btn-primary color-theme rounded-pill d-flex px-4 h-auto"
       data-bs-toggle="modal"
       data-bs-target="#exampleModal"
@@ -16,7 +25,23 @@
 <script>
 export default {
   name: "AppHeader",
-  props: ["handleCreateActivity"],
+  // props: ["title"],
+  props: {
+    title: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      
+    }
+  },
+  created() {
+    console.log(this.$route.props.title)
+    console.log(this.$route.params.id)
+    // this.$route.props.title
+  },
 };
 </script>
 
