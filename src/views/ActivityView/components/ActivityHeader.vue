@@ -1,14 +1,21 @@
 <template>
-  <div class="header-background py-4" data-cy="header-background">
-    <div class="container">
-      <span class="header-title" data-cy="header-title">TO DO LIST APP</span>
-    </div>
+  <div class="d-flex">
+    <h1 class="me-auto mb-0 align-self-center">Activity</h1>
+    <span
+      @click="handleCreateActivity"
+      class="btn btn-primary color-theme rounded-pill d-flex px-4 h-auto"
+      data-toggle="modal" data-target="#exampleModal"
+    >
+      <img class="img-fluid" src="../../../assets/tabler_plus.svg" alt="" />
+      <span class="align-self-center mb-0 ms-2">Tambah</span></span
+    >
   </div>
 </template>
 
 <script>
 export default {
   name: "AppHeader",
+  props: ["handleCreateActivity"],
 };
 </script>
 
@@ -29,14 +36,16 @@ export default {
 
 .header-title {
   /* header-title */
-  
-/* 
+
+  /* 
   position: absolute;
   width: 135px;
   height: 27px;
   left: 20px;
   top: 19px; */
 
+  font-family: "Poppins";
+  font-style: normal;
   font-weight: 700;
   font-size: 18px;
   line-height: 27px;
