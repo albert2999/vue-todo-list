@@ -1,6 +1,5 @@
 <template>
-  <div class="activity-item" data-cy="activity-item">
-    <div class="card">
+    <div class="card" data-cy="activity-item">
       <div class="card-body p-0">
         <div>
           <router-link
@@ -28,14 +27,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div>
-      <b>
-        <h4 data-cy="activity-item-title">{{ activityTitle }}</h4>
-      </b>
-    </div>
-    <small>{{ handleDate(activityDate) }}</small> -->
-  </div>
 </template>
 <script>
 /* eslint-disable */

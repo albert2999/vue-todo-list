@@ -19,6 +19,7 @@ export default {
 };
 </script>
 <style>
+
 body {
   font-family: "Poppins", sans-serif;
   background-color: #f4f4f4;
@@ -29,5 +30,9 @@ body {
   font-weight: 600;
   font-size: 18px;
   border-color: #16abf8 !important ;
+}
+.dot {
+  width: 14px !important;
+  height: 14px !important;
 }
 </style>

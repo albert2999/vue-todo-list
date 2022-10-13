@@ -8,8 +8,8 @@
     aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
+      <div class="modal-content ">
+        <div class="modal-header px-4">
           <h5 class="modal-title" id="exampleModalLabel">Tambah List item</h5>
           <button
             type="button"
@@ -18,7 +18,7 @@
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body py-5 px-3">
+        <div class="modal-body py-4 px-4">
           <label class="mb-2" data-cy="modal-add-name-title"
             >NAMA LIST ITEM
           </label>
@@ -83,6 +83,8 @@
 
 <script>
 /* eslint-disable */
+import priorities from '../../../priorities.js'
+
 export default {
   name: "ModalAddTodo",
   data() {
@@ -93,33 +95,7 @@ export default {
         value: "very-high",
         color: "#dc3545",
       },
-      priorities: [
-        {
-          title: "Very High",
-          value: "very-high",
-          color: "#dc3545",
-        },
-        {
-          title: "High",
-          value: "high",
-          color: "#F8A541",
-        },
-        {
-          title: "Normal",
-          value: "normal",
-          color: "#00A790",
-        },
-        {
-          title: "Low",
-          value: "low",
-          color: "#428BC1",
-        },
-        {
-          title: "Very Low",
-          value: "very-low",
-          color: "#8942C1",
-        },
-      ],
+      priorities,
     };
   },
   props: {},
@@ -159,12 +135,6 @@ export default {
 label {
   font-weight: 600;
   font-size: 12px;
-}
-
-.dot {
-  /* background-color: #dc3545; */
-  width: 12pt !important;
-  height: 12pt !important;
 }
 
 .btn-light {

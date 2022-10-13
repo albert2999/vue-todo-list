@@ -72,7 +72,7 @@ export default {
       axios
       .post(`/activity-groups`, {
         title: "New Activity",
-        email: "yoga+1@skyshi.io",
+        email: "albert@skyshi.io",
       })
       .then((response) => {
         console.log("responseCreate", response);
@@ -86,7 +86,7 @@ export default {
   created() {
     axios
       .get(`/activity-groups`, {
-        params: { email: "yoga+1@skyshi.io" },
+        params: { email: "albert@skyshi.io" },
       })
       .then((response) => {
         this.dataActivity = response.data.data;
