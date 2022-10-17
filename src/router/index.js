@@ -19,8 +19,8 @@ const routes = [
   {
     path: '/detail/:id',
     name: 'detail',
-    props: true,
     component: TodoView,
+    props: {default:true},
   }
 ]
 

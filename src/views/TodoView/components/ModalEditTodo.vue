@@ -2,7 +2,7 @@
   <!-- Modal -->
   <div
     class="modal fade"
-    id="addModal"
+    id="editModal"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
@@ -10,7 +10,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content ">
         <div class="modal-header px-4">
-          <h5 class="modal-title" id="exampleModalLabel">Tambah List item</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Edit item</h5>
           <button
             type="button"
             class="btn-close"
@@ -67,7 +67,7 @@
         <div class="modal-footer">
           <button
             type="button"
-            @click="handleSubmit()"
+            @click="handleUpdate()"
             data-bs-dismiss="modal"
             :class="`btn btn-primary color-theme rounded-pill d-flex px-4 h-auto ${
               recentItemTitle ? '' : 'disabled'
@@ -96,37 +96,62 @@ export default {
         color: "#dc3545",
       },
       priorities,
+      isUpdate : true,
     };
   },
-  props: ["handleCreateLocale",],
+  props: ["handleUpdateLocale","editTargetItem",],
   methods: {
     handlePrior(val) {
       this.recentPrior = val;
       console.log("val", val);
       console.log("val", this.recentItemTitle);
     },
-    handleSubmit() {
+    handleUpdate() {
       axios
-        .post(`/todo-items`, {
+        .patch(`/todo-items/${this.editTargetItem.id}`, {
           activity_group_id: this.$route.params.id,
           title: this.recentItemTitle,
           priority: this.recentPrior.value,
         })
         .then((response) => {
-          console.log("responseCreateItemList", response.data);
-          this.handleCreateLocale(response.data)
-          this.recentItemTitle = null;
-          this.recentPrior = {
-            title: "Very High",
-            value: "very-high",
-            color: "#dc3545",
-          };
-          // this.dataActivity.unshift(response.data);
+          // this.data = response.data.data;
+          console.log("isActive", response.data);
+          this.handleUpdateLocale(response.data);
         })
         .catch((error) => {
           console.error(error);
         });
+
+      // axios
+      //   .post(`/todo-items`, {
+      //     activity_group_id: this.$route.params.id,
+      //     title: this.recentItemTitle,
+      //     priority: this.recentPrior.value,
+      //   })
+      //   .then((response) => {
+      //     console.log("responseCreateItemList", response.data);
+      //     this.handleCreateLocale(response.data)
+
+      //     // this.recentItemTitle = null;
+      //     // this.recentPrior = {
+      //     //   title: "Very High",
+      //     //   value: "very-high",
+      //     //   color: "#dc3545",
+      //     // };
+      //     // this.dataActivity.unshift(response.data);
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
     },
+  },
+  updated() {
+    if (this.editTargetItem && this.isUpdate) {
+      this.recentItemTitle = this.editTargetItem.title
+      let index = this.priorities.findIndex((e) => e.value == this.editTargetItem.priority);
+      this.recentPrior = this.priorities[index]
+      this.isUpdate = false
+      }
   },
 };
 </script>

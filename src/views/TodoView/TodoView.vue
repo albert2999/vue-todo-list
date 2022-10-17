@@ -1,11 +1,9 @@
 <template>
   <div class="detail-view">
-    <todo-header
-    :dataDetails="dataDetails"
-    />
-    <div class="mt-4" v-if="dataDetails?.length > 0">
+    <todo-header :dataDetails="dataDetails" />
+    <div class="mt-4" v-if="dataDetailsTodo?.length > 0">
       <div
-        v-for="item in dataDetails"
+        v-for="item in dataDetailsTodo"
         :key="item.id"
         class="card mb-3"
         data-cy="activity-item"
@@ -15,15 +13,28 @@
             <div
               class="card-subtitle me-auto mt-1 align-self-center d-flex gap-3"
             >
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                :checked="!item.is_active"
+                @change="handleActiveTodo(item)"
+              />
               <div
                 class="dot border border-light rounded-circle align-self-center"
                 :style="`background-color: ${findColor(item.priority)};`"
               ></div>
               <!-- <div>{{ item.priority }}</div> -->
-              <span>{{ item.title }}</span>
+              <span
+                :class="
+                  item.is_active == 0
+                    ? 'text-decoration-line-through text-muted'
+                    : ''
+                "
+                >{{ item.title }}</span
+              >
               <img
-                @click="handleUpdate()"
+                @click="editTargetItem = item"
+                data-bs-toggle="modal"
+                data-bs-target="#editModal"
                 class="img-fluid btn p-0"
                 src="../../assets/todo-title-edit-button.svg"
                 alt=""
@@ -52,8 +63,10 @@
       />
     </div>
 
-    <modal-add-todo
-    :handleCreateLocale="handleCreateLocale"
+    <modal-add-todo :handleCreateLocale="handleCreateLocale" />
+    <modal-edit-todo
+      :handleUpdateLocale="handleUpdateLocale"
+      :editTargetItem="editTargetItem"
     />
   </div>
 </template>
@@ -61,34 +74,55 @@
 /* eslint-disable */
 import TodoHeader from "./components/TodoHeader.vue";
 import ModalAddTodo from "./components/ModalAddTodo.vue";
+import ModalEditTodo from "./components/ModalEditTodo.vue";
 import priorities from "../../priorities.js";
 
 export default {
   name: "DetailView",
   data() {
     return {
-      dataDetails: null,
+      dataDetailsTodo: null,
       priorities,
+      editTargetItem: null,
     };
   },
   components: {
     TodoHeader,
     ModalAddTodo,
+    ModalEditTodo,
   },
   methods: {
-    handleCreateTodo() {},
+    handleActiveTodo(item) {
+      axios
+        .patch(`/todo-items/${item.id}`, {
+          is_active: !item.is_active,
+        })
+        .then((response) => {
+          // this.data = response.data.data;
+          console.log("isActive", response.data);
+          this.handleUpdateLocale(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+      // console.log("active", val);
+    },
     findColor(val) {
       return priorities.find((sourceItem) => sourceItem.value == val).color;
     },
     handleCreateLocale(newData) {
-      this.dataDetails.unshift(newData)
+      this.dataDetailsTodo.unshift(newData);
+    },
+    handleUpdateLocale(newData) {
+      let index = this.dataDetailsTodo.findIndex((e) => e.id == newData.id);
+      this.dataDetailsTodo[index] = newData;
     },
     handleDeleteLocale(id) {
-      let newData = this.dataDetails.filter((el) => {
+      let newData = this.dataDetailsTodo.filter((el) => {
         return el.id != id;
       });
-      this.dataDetails = newData;
-
+      this.dataDetailsTodo = newData;
     },
     handleDelete(id) {
       if (id) {
@@ -111,8 +145,8 @@ export default {
     axios
       .get(`/activity-groups/` + this.$route.params.id)
       .then((response) => {
-        this.dataDetails = response.data.todo_items;
-        console.log("datadetails", this.dataDetails);
+        this.dataDetailsTodo = response.data.todo_items;
+        this.dataDetails = response.data;
       })
       .catch((error) => {
         console.error(error);

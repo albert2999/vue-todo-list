@@ -3,10 +3,10 @@
     <router-link to="/" class="text-decoration-none text-dark p-0 px-2 me-3">
       <h1 class="mb-0">&lt;</h1>
     </router-link>
-
-    <h1 class="mb-0 me-3 align-self-center">Activity {{}}</h1>
+    <input v-model="recentTitle" type="text" style="outline: 0; border:0;">
+    <h1 class="mb-0 me-3 align-self-center">{{dataDetails?.title}}</h1>
     <img
-      @click="handleDelete()"
+      @click="handleEditTitle()"
       class="me-auto img-fluid btn p-0"
       src="../../../assets/todo-title-edit-button.svg"
       alt=""
@@ -14,7 +14,7 @@
     <span
       class="btn btn-primary color-theme rounded-pill d-flex px-4 h-auto"
       data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
+      data-bs-target="#addModal"
     >
       <img class="img-fluid" src="../../../assets/tabler_plus.svg" alt="" />
       <span class="align-self-center mb-0 ms-2">Tambah</span></span
@@ -25,22 +25,19 @@
 <script>
 export default {
   name: "AppHeader",
-  // props: ["title"],
-  props: {
-    title: {
-      type: String,
-      required: true
-    }
-  },
+  props: ["dataDetails","id"],
   data() {
     return {
-      
+      recentTitle:null,
+    }
+  },
+  methods: {
+    handleEditTitle (){
+      this.recentTitle = this.dataDetails.title;
     }
   },
   created() {
-    console.log(this.$route.props.title)
-    console.log(this.$route.params.id)
-    // this.$route.props.title
+    
   },
 };
 </script>
@@ -69,7 +66,7 @@ export default {
   height: 27px;
   left: 20px;
   top: 19px; */
-
+  
   font-family: "Poppins";
   font-style: normal;
   font-weight: 700;
