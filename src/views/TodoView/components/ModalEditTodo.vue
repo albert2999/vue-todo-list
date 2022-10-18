@@ -90,6 +90,7 @@ export default {
   data() {
     return {
       recentItemTitle: null,
+      recentItemId: null,
       recentPrior: {
         title: "Very High",
         value: "very-high",
@@ -99,7 +100,7 @@ export default {
       isUpdate : true,
     };
   },
-  props: ["handleUpdateLocale","editTargetItem",],
+  props: ["resetModalEdit","handleUpdateLocale","editTargetItem",],
   methods: {
     handlePrior(val) {
       this.recentPrior = val;
@@ -108,7 +109,7 @@ export default {
     },
     handleUpdate() {
       axios
-        .patch(`/todo-items/${this.editTargetItem.id}`, {
+        .patch(`/todo-items/${this.recentItemId}`, {
           activity_group_id: this.$route.params.id,
           title: this.recentItemTitle,
           priority: this.recentPrior.value,
@@ -146,11 +147,25 @@ export default {
     },
   },
   updated() {
-    if (this.editTargetItem && this.isUpdate) {
+    console.log("this", this.editTargetItem)
+    console.log("this", this.isUpdate)
+    // console.log("this", this.recentItemTitle != this.editTargetItem.title)
+    // if (this.editTargetItem &&  this.recentItemTitle != this.editTargetItem.title ) {
+    //   this.recentItemTitle = this.editTargetItem.title
+    //   let index = this.priorities.findIndex((e) => e.value == this.editTargetItem.priority);
+    //   this.recentPrior = this.priorities[index]
+    //   this.resetModalEdit()
+    //   if(this.isUpdate){
+    //     this.isUpdate = false
+    //   }
+    //   }
+    
+    if (this.editTargetItem) {
       this.recentItemTitle = this.editTargetItem.title
+      this.recentItemId = this.editTargetItem.id
       let index = this.priorities.findIndex((e) => e.value == this.editTargetItem.priority);
       this.recentPrior = this.priorities[index]
-      this.isUpdate = false
+      this.resetModalEdit()
       }
   },
 };

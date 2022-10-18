@@ -1,6 +1,7 @@
 <template>
   <div class="detail-view">
-    <todo-header :dataDetails="dataDetails" />
+    <todo-header :dataDetails="dataDetails" :handleUpdateActivityLocale="handleUpdateActivityLocale" />
+    
     <div class="mt-4" v-if="dataDetailsTodo?.length > 0">
       <div
         v-for="item in dataDetailsTodo"
@@ -32,7 +33,7 @@
                 >{{ item.title }}</span
               >
               <img
-                @click="editTargetItem = item"
+                @click="editTargetItem = item;"
                 data-bs-toggle="modal"
                 data-bs-target="#editModal"
                 class="img-fluid btn p-0"
@@ -64,10 +65,13 @@
     </div>
 
     <modal-add-todo :handleCreateLocale="handleCreateLocale" />
+
     <modal-edit-todo
+      :resetModalEdit="resetModalEdit"
       :handleUpdateLocale="handleUpdateLocale"
       :editTargetItem="editTargetItem"
     />
+
   </div>
 </template>
 <script>
@@ -82,6 +86,7 @@ export default {
   data() {
     return {
       dataDetailsTodo: null,
+      dataDetails: null,
       priorities,
       editTargetItem: null,
     };
@@ -110,6 +115,12 @@ export default {
     },
     findColor(val) {
       return priorities.find((sourceItem) => sourceItem.value == val).color;
+    },
+    resetModalEdit(){
+      this.editTargetItem = null;
+    },
+    handleUpdateActivityLocale(newTitle) {
+      this.dataDetails.title = newTitle;
     },
     handleCreateLocale(newData) {
       this.dataDetailsTodo.unshift(newData);
